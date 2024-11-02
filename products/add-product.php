@@ -42,11 +42,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $priceErr = 'Price must be greater than 0.';
     }
 
+    $maxFileSize = 5 * 1024 * 1024;
+
     $imageFileType = strtolower(pathinfo($image, PATHINFO_EXTENSION));
     if(empty($image)){
         $imageErr = 'Product image is required.';
     }else if(!in_array($imageFileType, $allowedType)){
         $imageErr = 'Accepted files are jpg, jpeg, and png only.';
+    }else if($_FILES['product_image']['size'] > $maxFileSize){
+        $imageErr = 'Image file size must not exceed 5MB.';
     }
 
     // If there are validation errors, return them as JSON
